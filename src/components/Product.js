@@ -1,10 +1,21 @@
 import './Product.css';
-function Product() {
+
+function Product(props) {
+  const addToCart = () => {
+    console.log('add');
+
+    const cartProduct = {
+      id: props.id,
+      price: props.price,
+    };
+    props.onAddToCart(cartProduct);
+  };
   return (
     <div>
-      <div className="data-1">Data 1</div>
-      <div className="data-2">Data 2</div>
-      <div className="data-3">Data 3</div>
+      <div className="data-2">{props.price}</div>
+      <div className="data-3">{props.shortDescription}</div>
+
+      <button onClick={addToCart}>Add To cart</button>
     </div>
   );
 }
