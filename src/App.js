@@ -1,38 +1,48 @@
 import Product from './components/Product';
 import ShippingInfo from './components/ShippingInfo';
+import ShoppingCart from './components/ShoppingCart';
+import { useState } from 'react';
 
-function App() {
-  const products = [
-    {
-      id: 123,
-      price: 432,
-      shortDescription: 'Cool Product',
-    },
-    {
-      id: 321,
-      price: 391,
-      shortDescription: 'Bad Product',
-    },
-  ];
+const initialProducts = [
+  {
+    id: 123,
+    price: 432,
+    shortDescription: 'Cool Product',
+  },
+  {
+    id: 321,
+    price: 391,
+    shortDescription: 'Bad Product',
+  },
+];
+const App = () => {
+  const [products, setProducts] = useState(initialProducts);
+
+  const [shoppingCartProducts, setShoppingCartProdcuts] = useState([]);
 
   const addToCart = (product) => {
-    // const product
-    console.log(product);
+    setShoppingCartProdcuts((previousProducts) => {
+      return [product, ...previousProducts];
+    });
   };
 
   return (
     <div>
       <h2>This is the App</h2>
-      <div> Product in cart 0</div>
-      <Product
-        onAddToCart={addToCart}
-        price={products[0].price}
-        id={products[0].id}
-        shortDescription={products[0].shortDescription}
-      ></Product>
+
+      {products.map((product) => (
+        <Product
+          key={product.id}
+          onAddToCart={addToCart}
+          price={product.price}
+          shortDescription={product.shortDescription}
+          id={product.id}
+        ></Product>
+      ))}
+      <ShoppingCart products={shoppingCartProducts}></ShoppingCart>
       <ShippingInfo></ShippingInfo>
     </div>
   );
-}
+};
 
 export default App;
