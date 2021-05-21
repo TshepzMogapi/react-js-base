@@ -1,6 +1,6 @@
 import Product from './components/Product';
-import ShippingInfo from './components/ShippingInfo';
 import ShoppingCart from './components/ShoppingCart';
+import Filters from './components/Filters';
 import { useState } from 'react';
 
 const initialProducts = [
@@ -15,6 +15,13 @@ const initialProducts = [
     shortDescription: 'Bad Product',
   },
 ];
+
+const filters = [
+  { name: 'Type A', category: 1, checked: false },
+  { name: 'Type B', category: 2, checked: false },
+  { name: 'Type C', category: 3, checked: false },
+  { name: 'Type D', category: 4, checked: false },
+];
 const App = () => {
   const [products, setProducts] = useState(initialProducts);
 
@@ -26,9 +33,18 @@ const App = () => {
     });
   };
 
+  const filterProducts = (updatedFilter) => {
+    // filter products
+    console.log('filterProducts');
+    console.log(updatedFilter);
+  };
+
   return (
     <div>
       <h2>This is the App</h2>
+      <ShoppingCart products={shoppingCartProducts}></ShoppingCart>
+
+      <Filters onFiltersUpdated={filterProducts} filters={filters}></Filters>
 
       {products.map((product) => (
         <Product
@@ -39,8 +55,6 @@ const App = () => {
           id={product.id}
         ></Product>
       ))}
-      <ShoppingCart products={shoppingCartProducts}></ShoppingCart>
-      <ShippingInfo></ShippingInfo>
     </div>
   );
 };
