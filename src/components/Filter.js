@@ -1,15 +1,18 @@
 import { useState } from 'react';
 const Filter = (props) => {
   const [filter, setFilter] = useState(props.filter);
-  // props.onFilterBy
-  const applyFilter = () => {
-    // props.onFilterBy(props.filter);
 
+  const applyFilter = () => {
     setFilter((prevFilter) => {
-      return { ...prevFilter, checked: !prevFilter.checked };
+      const updatedFilter = {
+        ...prevFilter,
+        checked: !prevFilter.checked,
+      };
+      return updatedFilter;
     });
 
-    props.onFilterBy(filter);
+    let updatedFilter = { ...filter, checked: !filter.checked };
+    props.onFilterBy(updatedFilter);
   };
   return (
     <span onClick={applyFilter} className="filter">
