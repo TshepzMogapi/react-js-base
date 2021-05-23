@@ -1,4 +1,5 @@
 import Product from './Product';
+import styles from './ProductContainer.module.css';
 
 const ProductsContainer = (props) => {
   const addToCart = (product) => {
@@ -17,7 +18,7 @@ const ProductsContainer = (props) => {
       ></Product>
     ));
   }
-  return <div>{dislpayedProducts}</div>;
+  return <div className={styles.container}>{dislpayedProducts}</div>;
 };
 
 export default ProductsContainer;
