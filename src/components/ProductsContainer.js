@@ -1,13 +1,16 @@
 import Product from './Product';
 
 const ProductsContainer = (props) => {
+  const addToCart = (product) => {
+    props.onAddToCart(product);
+  };
   let dislpayedProducts = <div>No products found</div>;
 
   if (props.products.length > 0) {
     dislpayedProducts = props.products.map((product) => (
       <Product
         key={product.id}
-        // onAddToCart={addToCart}
+        onAddToCart={addToCart}
         price={product.price}
         shortDescription={product.shortDescription}
         id={product.id}

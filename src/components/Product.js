@@ -1,6 +1,15 @@
 import './Product.css';
+import styled from 'styled-components';
 
-function Product(props) {
+const Button = styled.button`
+  background: green;
+  border-radius: 3px;
+  color: white;
+  margin: 0 1em;
+  padding: 0.25em 1em;
+`;
+
+const Product = (props) => {
   const addToCart = () => {
     console.log('add');
 
@@ -15,9 +24,9 @@ function Product(props) {
       <div className="data-2">{props.price}</div>
       <div className="data-3">{props.shortDescription}</div>
 
-      <button onClick={addToCart}>Add To cart</button>
+      <Button onClick={addToCart}>Add To cart</Button>
     </div>
   );
-}
+};
 
 export default Product;

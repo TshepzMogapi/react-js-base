@@ -56,9 +56,6 @@ const App = () => {
       console.log(previousProducts);
       return [...filteredProducts];
     });
-
-    // filter products
-    // setFilters(updatedFilters);
   };
 
   return (
@@ -68,7 +65,7 @@ const App = () => {
 
       <Filters onFiltersUpdated={filterProducts} filters={filters}></Filters>
 
-      <ProductsContainer products={products} />
+      <ProductsContainer onAddToCart={addToCart} products={products} />
     </div>
   );
 };
