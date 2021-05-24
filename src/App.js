@@ -3,6 +3,7 @@ import ShoppingCart from './components/ShoppingCart';
 import Filters from './components/Filters';
 import { useState } from 'react';
 import ProductsContainer from './components/ProductsContainer';
+import ShippingInfo from './components/ShippingInfo';
 
 const initialProducts = [
   {
@@ -66,6 +67,8 @@ const App = () => {
       <Filters onFiltersUpdated={filterProducts} filters={filters}></Filters>
 
       <ProductsContainer onAddToCart={addToCart} products={products} />
+
+      <ShippingInfo></ShippingInfo>
     </div>
   );
 };

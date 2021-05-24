@@ -1,5 +1,6 @@
 import './Product.css';
 import styled from 'styled-components';
+import { Fragment } from 'react';
 
 const Button = styled.button`
   background: green;
@@ -20,12 +21,12 @@ const Product = (props) => {
     props.onAddToCart(cartProduct);
   };
   return (
-    <div>
+    <Fragment>
       <div className="data-2">{props.price}</div>
       <div className="data-3">{props.shortDescription}</div>
 
       <Button onClick={addToCart}>Add To cart</Button>
-    </div>
+    </Fragment>
   );
 };
 

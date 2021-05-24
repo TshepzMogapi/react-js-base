@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import Filter from './Filter';
 
 const Filters = (props) => {
@@ -18,12 +18,12 @@ const Filters = (props) => {
     props.onFiltersUpdated(filter);
   };
   return (
-    <div>
+    <Fragment>
       Filters
       {filters.map((f) => (
         <Filter onFilterBy={filterBy} key={f.category} filter={f}></Filter>
       ))}
-    </div>
+    </Fragment>
   );
 };
 

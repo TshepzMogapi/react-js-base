@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 const ShippingInfo = () => {
   const [formInput, setFormInput] = useState({
     title: '',
     number: '',
   });
+
+  const titleInputRef = useRef();
 
   const submitForm = (event) => {
     event.preventDefault();
@@ -12,17 +14,13 @@ const ShippingInfo = () => {
       return { ...prevState, title: 'Updated' };
     });
 
-    console.log(formInput);
+    console.log(titleInputRef);
   };
 
-  const textChanged = (event) => {
-    console.log(formInput);
-  };
   return (
     <div>
       <form onSubmit={submitForm}>
-        <input type="text" onChange={textChanged} />
-        <input type="text" placeholder="Enter title" />
+        <input ref={titleInputRef} type="text" placeholder="Enter title" />
 
         <button type="submit">Test</button>
       </form>
