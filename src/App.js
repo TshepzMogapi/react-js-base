@@ -1,7 +1,8 @@
 import Product from './components/Product';
+import styled from 'styled-components';
 import ShoppingCart from './components/ShoppingCart';
 import Filters from './components/Filters';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import ProductsContainer from './components/ProductsContainer';
 import ShippingInfo from './components/ShippingInfo';
 
@@ -20,7 +21,7 @@ const initialProducts = [
   },
   {
     id: 333,
-    price: 391,
+    price: 399,
     shortDescription: 'Another Product',
     categories: [3],
   },
@@ -32,7 +33,18 @@ const initialFilters = [
   { name: 'Type C', category: 3, checked: false },
   { name: 'Type D', category: 4, checked: false },
 ];
+
+const Button = styled.button`
+  background: blue;
+  border-radius: 3px;
+  color: white;
+  margin: 0 1em;
+  padding: 0.25em 1em;
+`;
+
 const App = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   const [products, setProducts] = useState(initialProducts);
 
   const [shoppingCartProducts, setShoppingCartProdcuts] = useState([]);
@@ -41,20 +53,32 @@ const App = () => {
 
   let filteredProducts = products;
 
+  useEffect(()=> {
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      setIsLoggedIn(true);
+    }
+  }, [])
+
   const addToCart = (product) => {
     setShoppingCartProdcuts((previousProducts) => {
       return [product, ...previousProducts];
     });
   };
 
+  const login = () => {
+    localStorage.setItem('currentUser', 1)
+    setIsLoggedIn(true);
+  }
+
+  const logout = () => {
+    setIsLoggedIn(false);
+    localStorage.removeItem('currentUser')
+  }
+
   const filterProducts = (updatedFilter) => {
-    console.log(updatedFilter);
-
     filteredProducts = products.filter((p) => p.categories.includes(2));
-    console.log(filteredProducts);
-
     setProducts((previousProducts) => {
-      console.log(previousProducts);
       return [...filteredProducts];
     });
   };
@@ -62,6 +86,9 @@ const App = () => {
   return (
     <div>
       <h2>This is the App</h2>
+      <Button onClick={isLoggedIn ? logout : login}> {isLoggedIn ? 'Logout' : 'Login'}</Button>
+
+      <h3>User Logged In {isLoggedIn ? 'True' : 'False'} </h3>
       <ShoppingCart products={shoppingCartProducts}></ShoppingCart>
 
       <Filters onFiltersUpdated={filterProducts} filters={filters}></Filters>
