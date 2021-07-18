@@ -2,7 +2,7 @@ import Product from './components/Product';
 import styled from 'styled-components';
 import ShoppingCart from './components/ShoppingCart';
 import Filters from './components/Filters';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useReducer } from 'react';
 import ProductsContainer from './components/ProductsContainer';
 import ShippingInfo from './components/ShippingInfo';
 
@@ -42,16 +42,35 @@ const Button = styled.button`
   padding: 0.25em 1em;
 `;
 
+const productsReducer = (state, action) => {
+  if (action.type === 'ADD_TO_CART') {
+    console.log("REDUCER TRIGGERED");
+    return {
+      products:[],
+      shoppingCartProducts:  [...state.shoppingCartProducts, action.product]
+    }
+  }
+  return {
+    products:[],
+    shoppingCartProducts:[]
+  }
+};
+
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const [products, setProducts] = useState(initialProducts);
 
-  const [shoppingCartProducts, setShoppingCartProdcuts] = useState([]);
+  // const [shoppingCartProducts, setShoppingCartProdcuts] = useState([]);
 
   const [filters, setFilters] = useState(initialFilters);
 
   let filteredProducts = products;
+
+  const [productsState, dispatchProducts] = useReducer(productsReducer, {
+    // products:[],
+    shoppingCartProducts:[]
+  })
 
   useEffect(()=> {
     const currentUser = localStorage.getItem('currentUser');
@@ -61,9 +80,11 @@ const App = () => {
   }, [])
 
   const addToCart = (product) => {
-    setShoppingCartProdcuts((previousProducts) => {
-      return [product, ...previousProducts];
-    });
+    dispatchProducts({type: 'ADD_TO_CART', product: product});
+
+    // setShoppingCartProdcuts((previousProducts) => {
+    //   return [product, ...previousProducts];
+    // });
   };
 
   const login = () => {
@@ -89,13 +110,14 @@ const App = () => {
       <Button onClick={isLoggedIn ? logout : login}> {isLoggedIn ? 'Logout' : 'Login'}</Button>
 
       <h3>User Logged In {isLoggedIn ? 'True' : 'False'} </h3>
-      <ShoppingCart products={shoppingCartProducts}></ShoppingCart>
+      <ShoppingCart products={productsState.shoppingCartProducts}></ShoppingCart>
 
       <Filters onFiltersUpdated={filterProducts} filters={filters}></Filters>
 
       <ProductsContainer onAddToCart={addToCart} products={products} />
 
       <ShippingInfo></ShippingInfo>
+      <div>{JSON.stringify(productsState)}</div>
     </div>
   );
 };
