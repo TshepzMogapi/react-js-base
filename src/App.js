@@ -1,9 +1,12 @@
 import Product from './components/Product';
+import styled from 'styled-components';
 import ShoppingCart from './components/ShoppingCart';
 import Filters from './components/Filters';
-import { useState } from 'react';
+import { useState, useEffect, useReducer } from 'react';
 import ProductsContainer from './components/ProductsContainer';
 import ShippingInfo from './components/ShippingInfo';
+import Header from './components/Header';
+import AuthContext from './store/auth-context';
 
 const initialProducts = [
   {
@@ -20,7 +23,7 @@ const initialProducts = [
   },
   {
     id: 333,
-    price: 391,
+    price: 399,
     shortDescription: 'Another Product',
     categories: [3],
   },
@@ -32,43 +35,97 @@ const initialFilters = [
   { name: 'Type C', category: 3, checked: false },
   { name: 'Type D', category: 4, checked: false },
 ];
+
+const Button = styled.button`
+  background: blue;
+  border-radius: 3px;
+  color: white;
+  margin: 0 1em;
+  padding: 0.25em 1em;
+`;
+
+const productsReducer = (state, action) => {
+  if (action.type === 'ADD_TO_CART') {
+    console.log('REDUCER TRIGGERED');
+    return {
+      products: [],
+      shoppingCartProducts: [...state.shoppingCartProducts, action.product],
+    };
+  }
+  return {
+    products: [],
+    shoppingCartProducts: [],
+  };
+};
+
 const App = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   const [products, setProducts] = useState(initialProducts);
 
-  const [shoppingCartProducts, setShoppingCartProdcuts] = useState([]);
+  // const [shoppingCartProducts, setShoppingCartProdcuts] = useState([]);
 
   const [filters, setFilters] = useState(initialFilters);
 
   let filteredProducts = products;
 
+  const [productsState, dispatchProducts] = useReducer(productsReducer, {
+    // products:[],
+    shoppingCartProducts: [],
+  });
+
+  useEffect(() => {
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      setIsLoggedIn(true);
+    }
+  }, []);
+
   const addToCart = (product) => {
-    setShoppingCartProdcuts((previousProducts) => {
-      return [product, ...previousProducts];
-    });
+    dispatchProducts({ type: 'ADD_TO_CART', product: product });
+
+    // setShoppingCartProdcuts((previousProducts) => {
+    //   return [product, ...previousProducts];
+    // });
+  };
+
+  const login = () => {
+    localStorage.setItem('currentUser', 1);
+    setIsLoggedIn(true);
+  };
+
+  const logout = () => {
+    setIsLoggedIn(false);
+    localStorage.removeItem('currentUser');
   };
 
   const filterProducts = (updatedFilter) => {
-    console.log(updatedFilter);
-
     filteredProducts = products.filter((p) => p.categories.includes(2));
-    console.log(filteredProducts);
-
     setProducts((previousProducts) => {
-      console.log(previousProducts);
       return [...filteredProducts];
     });
   };
 
   return (
     <div>
-      <h2>This is the App</h2>
-      <ShoppingCart products={shoppingCartProducts}></ShoppingCart>
+      <AuthContext.Provider>
+        <Header></Header>
+        <main>
+          <ShoppingCart
+            products={productsState.shoppingCartProducts}
+          ></ShoppingCart>
 
-      <Filters onFiltersUpdated={filterProducts} filters={filters}></Filters>
+          <Filters
+            onFiltersUpdated={filterProducts}
+            filters={filters}
+          ></Filters>
 
-      <ProductsContainer onAddToCart={addToCart} products={products} />
+          <ProductsContainer onAddToCart={addToCart} products={products} />
 
-      <ShippingInfo></ShippingInfo>
+          <ShippingInfo></ShippingInfo>
+          <div>{JSON.stringify(productsState)}</div>
+        </main>
+      </AuthContext.Provider>
     </div>
   );
 };
