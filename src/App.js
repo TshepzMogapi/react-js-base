@@ -108,8 +108,17 @@ const App = () => {
 
   return (
     <div>
-      <AuthContext.Provider>
-        <Header></Header>
+      <AuthContext.Provider value={{isLoggedIn: isLoggedIn,
+      onLogout: logout
+      }}>
+        {isLoggedIn && (
+        <Header/>
+        )}
+        
+         {!isLoggedIn && (
+        <button onClick={login}>Login</button>
+        )}
+        
         <main>
           <ShoppingCart
             products={productsState.shoppingCartProducts}
