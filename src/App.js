@@ -5,6 +5,8 @@ import Filters from './components/Filters';
 import { useState, useEffect, useReducer } from 'react';
 import ProductsContainer from './components/ProductsContainer';
 import ShippingInfo from './components/ShippingInfo';
+import Header from './components/Header';
+import AuthContext from './store/auth-context';
 
 const initialProducts = [
   {
@@ -44,16 +46,16 @@ const Button = styled.button`
 
 const productsReducer = (state, action) => {
   if (action.type === 'ADD_TO_CART') {
-    console.log("REDUCER TRIGGERED");
+    console.log('REDUCER TRIGGERED');
     return {
-      products:[],
-      shoppingCartProducts:  [...state.shoppingCartProducts, action.product]
-    }
+      products: [],
+      shoppingCartProducts: [...state.shoppingCartProducts, action.product],
+    };
   }
   return {
-    products:[],
-    shoppingCartProducts:[]
-  }
+    products: [],
+    shoppingCartProducts: [],
+  };
 };
 
 const App = () => {
@@ -69,18 +71,18 @@ const App = () => {
 
   const [productsState, dispatchProducts] = useReducer(productsReducer, {
     // products:[],
-    shoppingCartProducts:[]
-  })
+    shoppingCartProducts: [],
+  });
 
-  useEffect(()=> {
+  useEffect(() => {
     const currentUser = localStorage.getItem('currentUser');
     if (currentUser) {
       setIsLoggedIn(true);
     }
-  }, [])
+  }, []);
 
   const addToCart = (product) => {
-    dispatchProducts({type: 'ADD_TO_CART', product: product});
+    dispatchProducts({ type: 'ADD_TO_CART', product: product });
 
     // setShoppingCartProdcuts((previousProducts) => {
     //   return [product, ...previousProducts];
@@ -88,14 +90,14 @@ const App = () => {
   };
 
   const login = () => {
-    localStorage.setItem('currentUser', 1)
+    localStorage.setItem('currentUser', 1);
     setIsLoggedIn(true);
-  }
+  };
 
   const logout = () => {
     setIsLoggedIn(false);
-    localStorage.removeItem('currentUser')
-  }
+    localStorage.removeItem('currentUser');
+  };
 
   const filterProducts = (updatedFilter) => {
     filteredProducts = products.filter((p) => p.categories.includes(2));
@@ -106,18 +108,24 @@ const App = () => {
 
   return (
     <div>
-      <h2>This is the App</h2>
-      <Button onClick={isLoggedIn ? logout : login}> {isLoggedIn ? 'Logout' : 'Login'}</Button>
+      <AuthContext.Provider>
+        <Header></Header>
+        <main>
+          <ShoppingCart
+            products={productsState.shoppingCartProducts}
+          ></ShoppingCart>
 
-      <h3>User Logged In {isLoggedIn ? 'True' : 'False'} </h3>
-      <ShoppingCart products={productsState.shoppingCartProducts}></ShoppingCart>
+          <Filters
+            onFiltersUpdated={filterProducts}
+            filters={filters}
+          ></Filters>
 
-      <Filters onFiltersUpdated={filterProducts} filters={filters}></Filters>
+          <ProductsContainer onAddToCart={addToCart} products={products} />
 
-      <ProductsContainer onAddToCart={addToCart} products={products} />
-
-      <ShippingInfo></ShippingInfo>
-      <div>{JSON.stringify(productsState)}</div>
+          <ShippingInfo></ShippingInfo>
+          <div>{JSON.stringify(productsState)}</div>
+        </main>
+      </AuthContext.Provider>
     </div>
   );
 };
