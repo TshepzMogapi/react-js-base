@@ -2,11 +2,12 @@ import Product from './components/Product';
 import styled from 'styled-components';
 import ShoppingCart from './components/ShoppingCart';
 import Filters from './components/Filters';
-import { useState, useEffect, useReducer } from 'react';
+import { useState, useEffect, useReducer, useContext } from 'react';
 import ProductsContainer from './components/ProductsContainer';
 import ShippingInfo from './components/ShippingInfo';
 import Header from './components/Header';
 import AuthContext from './store/auth-context';
+import Login from './components/Login';
 
 const initialProducts = [
   {
@@ -106,20 +107,12 @@ const App = () => {
     });
   };
 
+  const ctx = useContext(AuthContext);
+
   return (
     <div>
-      <AuthContext.Provider value={{isLoggedIn: isLoggedIn,
-      onLogout: logout
-      }}>
-        {isLoggedIn && (
-        <Header/>
-        )}
-        
-         {!isLoggedIn && (
-        <button onClick={login}>Login</button>
-        )}
-        
         <main>
+          <Login/>
           <ShoppingCart
             products={productsState.shoppingCartProducts}
           ></ShoppingCart>
@@ -134,7 +127,7 @@ const App = () => {
           <ShippingInfo></ShippingInfo>
           <div>{JSON.stringify(productsState)}</div>
         </main>
-      </AuthContext.Provider>
+
     </div>
   );
 };
