@@ -1,18 +1,19 @@
-import { useContext } from 'react';
-import AuthContext from '../store/auth-context';
-const Header = (props) => {
+import { useContext } from "react";
+import AuthContext from "../store/auth-context";
+import Button from "@mui/material/Button";
 
+const Header = (props) => {
   const ctx = useContext(AuthContext);
 
-    return (
-      <>
+  return (
+    <>
       <h2>This is the App</h2>
-      <button onClick={ctx.onLogout}>
-        Logout        
-      </button>
-      <h3>User Logged In {ctx.isLoggedIn ? 'True' : 'False'} </h3>
-      </>
-    )
+      <Button onClick={ctx.onLogout} variant="contained">
+        Logout
+      </Button>
+      ;<h3>User Logged In {ctx.isLoggedIn ? "True" : "False"} </h3>
+    </>
+  );
 };
 
 export default Header;
