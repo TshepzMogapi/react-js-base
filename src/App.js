@@ -1,13 +1,13 @@
-import Product from './components/Product';
 import styled from 'styled-components';
 import ShoppingCart from './components/ShoppingCart';
 import Filters from './components/Filters';
-import { useState, useEffect, useReducer, useContext } from 'react';
+import { useState, useEffect, useReducer, useContext, Fragment } from 'react';
 import ProductsContainer from './components/ProductsContainer';
 import ShippingInfo from './components/ShippingInfo';
-import Header from './components/Header';
 import AuthContext from './store/auth-context';
 import Login from './components/Login';
+import Header from './components/header/header';
+import ProductSummary from './components/product-summary/product-summary';
 
 const initialProducts = [
   {
@@ -84,10 +84,6 @@ const App = () => {
 
   const addToCart = (product) => {
     dispatchProducts({ type: 'ADD_TO_CART', product: product });
-
-    // setShoppingCartProdcuts((previousProducts) => {
-    //   return [product, ...previousProducts];
-    // });
   };
 
   const login = () => {
@@ -110,9 +106,14 @@ const App = () => {
   const ctx = useContext(AuthContext);
 
   return (
-    <div>
-        <main>
+    <>
+        <Header/>
+        
+        <ProductsContainer onAddToCart={addToCart} products={products} />
+
+        {/* <main>
           <Login/>
+          
           <ShoppingCart
             products={productsState.shoppingCartProducts}
           ></ShoppingCart>
@@ -126,9 +127,9 @@ const App = () => {
 
           <ShippingInfo></ShippingInfo>
           <div>{JSON.stringify(productsState)}</div>
-        </main>
+        </main> */}
 
-    </div>
+    </>
   );
 };
 

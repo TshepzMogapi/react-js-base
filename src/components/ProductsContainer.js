@@ -1,6 +1,8 @@
-import Product from './Product';
-import styles from './ProductContainer.module.css';
-
+import Product from "./Product";
+import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
+import ProductSummary from "../components/product-summary/product-summary";
+import Fragment from "react";
 const ProductsContainer = (props) => {
   const addToCart = (product) => {
     props.onAddToCart(product);
@@ -8,17 +10,15 @@ const ProductsContainer = (props) => {
   let dislpayedProducts = <div>No products found</div>;
 
   if (props.products.length > 0) {
-    dislpayedProducts = props.products.map((product) => (
-      <Product
-        key={product.id}
-        onAddToCart={addToCart}
-        price={product.price}
-        shortDescription={product.shortDescription}
-        id={product.id}
-      ></Product>
-    ));
+    dislpayedProducts = props.products.map((product) => <ProductSummary />);
   }
-  return <div className={styles.container}>{dislpayedProducts}</div>;
+  return (
+    <div style={{ marginTop: "120px" }}>
+      <Container maxWidth="sm">
+        <ProductSummary />
+      </Container>
+    </div>
+  );
 };
 
 export default ProductsContainer;
