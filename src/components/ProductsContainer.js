@@ -2,6 +2,7 @@ import Product from "./Product";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import ProductSummary from "../components/product-summary/product-summary";
+import MyDoc from "../components/MyDoc"
 import Fragment from "react";
 const ProductsContainer = (props) => {
   const addToCart = (product) => {
@@ -15,7 +16,11 @@ const ProductsContainer = (props) => {
   return (
     <div style={{ marginTop: "120px" }}>
       <Container maxWidth="sm">
-        <ProductSummary />
+        {/* <ProductSummary /> */}
+        <div style={{ height: "120px" }}>
+        <MyDoc/>
+
+        </div>
       </Container>
     </div>
   );
